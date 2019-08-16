@@ -1,5 +1,10 @@
 /* global $*/
 
+/////////////////////////////////////////////////////////////////////////////
+//////////////////////////// VARIABLES //////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+
 // Set window sessionStorage to keep track of high scores (lowest time)
 sessionStorage.setItem("lowestTime", Infinity);
 sessionStorage.setItem("lowestTimeStr", "0:00");
@@ -16,13 +21,16 @@ var boardHeight = $(window).height();
 
 // bubble variables
 var bubblesLeft = 0;
-var pointsPerBubble = prompt("Points per bubble");
-var maxBubbles = prompt("Max Bubbles");
 var bubbles;
 
 // interval variables
 var updateInterval;
 var timerInterval;
+
+
+/////////////////////////////////////////////////////////////////////////////
+//////////////////////////// GAME SETUP /////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 init();
 
@@ -37,22 +45,88 @@ function init() {
   bubbles = [];
   updateInterval;
   timerInterval;
-  
+
+  var pointsPerBubble = prompt("Points per bubble");
+  var maxBubbles = prompt("Max Bubbles");
+
   for (var i = 0; i < maxBubbles; i++) {
-    var bubble = makeBubble();
+    var bubble = makeBubble(pointsPerBubble);
     bubbles.push(bubble);
     board.append(bubble);
   }
 
-  bubblesLeft = maxBubbles;
+  bubblesLeft = bubbles.length;
   
   //start game running
   updateInterval = setInterval(update, 50);
   timerInterval = setInterval(updateTimer, 1000);
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//////////////////////////// GAME LOGIC /////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+/* 
+* On each update tick update each bubble's position and check for
+* collisions with the walls.
+*/
+function update() {
+  for (var i = 0; i < bubbles.length; i++) {
+    var bubble = bubbles[i];
+    updateBubblePosition(bubble);
+    keepInBounds(bubble);
+  }
+  
+  if (bubblesLeft === 0) {
+    endGame();
+    init();
+  }
+}
+
+/* 
+ * When clicking on a bubble increase the bubble's speed,
+ * decrement its point value, and if the point value hits 0 
+ * remove it
+ */
+function handleBubbleClick(bubble) {
+  bubble.speed += 3;
+  bubble.points--;
+  if (bubble.points === 0) {
+    popBubble(bubble);
+  }
+  bubble.text(bubble.points);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////////////////////////// HELPER FUNCTIONS /////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+function updateBubblePosition(bubble) {
+  bubble.x += (bubble.directionX * bubble.speed);
+  bubble.y += (bubble.directionY * bubble.speed);
+  bubble.css('left', bubble.x);
+  bubble.css('top', bubble.y);
+}
+
+function keepInBounds(bubble) {
+  if (bubble.x + 70 > boardWidth) {
+    bubble.directionX = -1;
+  }
+  else if (bubble.x < 0) {
+    bubble.directionX = 1;
+  }
+
+  if (bubble.y + 70 > boardHeight) {
+    bubble.directionY = -1;
+  }
+  else if (bubble.y < 0) {
+    bubble.directionY = 1;
+  }
+}
+
 /* Making Bubbles */
-function makeBubble() {
+function makeBubble(pointsPerBubble) {
   // make the bubble Object
   var bubble = $('<div>')
     .addClass('bubble')
@@ -76,17 +150,13 @@ function makeBubble() {
 }
 
 /* 
- * When clicking on a bubble increase the bubble's speed,
- * decrement its point value, and if the point value hits 0 
- * remove it
- */
-function handleBubbleClick(bubble) {
-  bubble.speed += 3;
-  bubble.points--;
-  if (bubble.points === 0) {
-    popBubble(bubble);
-  }
-  bubble.text(bubble.points);
+* Each rgb value will be between 0 and 255
+*/
+function randomRGB() {
+  var r = Math.round(50 + Math.random() * 205);
+  var g = Math.round(50 + Math.random() * 205);
+  var b = Math.round(50 + Math.random() * 205);
+  return "rgb(" + r + "," + g + "," + b + ")";
 }
 
 /* 
@@ -99,57 +169,6 @@ function popBubble(bubble) {
     bubble.remove();
     bubblesLeft--;
   });
-}
-
-/* 
- * Each rgb value will be between 0 and 255
- */
-function randomRGB() {
-  var r = Math.round(50 + Math.random() * 205);
-  var g = Math.round(50 + Math.random() * 205);
-  var b = Math.round(50 + Math.random() * 205);
-  return "rgb(" + r + "," + g + "," + b + ")";
-}
-
-
-/* 
- * On each update tick update each bubble's position and check for
- * collisions with the walls.
- */
-function update() {
-  for (var i = 0; i < bubbles.length; i++) {
-    var bubble = bubbles[i];
-    updateBubblePosition(bubble);
-    keepInBounds(bubble);
-  }
-
-  if (bubblesLeft === 0) {
-    endGame();
-    init();
-  }
-}
-
-function updateBubblePosition(bubble) {
-  bubble.x += (bubble.directionX * bubble.speed);
-  bubble.y += (bubble.directionY * bubble.speed);
-  bubble.css('left', bubble.x);
-  bubble.css('top', bubble.y);
-}
-
-function keepInBounds(bubble) {
-  if (bubble.x + 70 > boardWidth) {
-    bubble.directionX = -1;
-  }
-  else if (bubble.x < 0) {
-    bubble.directionX = 1;
-  }
-
-  if (bubble.y + 70 > boardHeight) {
-    bubble.directionY = -1;
-  }
-  else if (bubble.y < 0) {
-    bubble.directionY = 1;
-  }
 }
 
 function updateTimer() {
