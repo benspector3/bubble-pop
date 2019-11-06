@@ -20,8 +20,6 @@ var boardWidth = board.width();
 var boardHeight = $(window).height();
 
 // bubble variables
-var pointsPerBubble = prompt("Points per bubble");
-var maxBubbles = prompt("Max Bubbles");
 var bubblesLeft;
 var bubbles;
 
@@ -42,9 +40,13 @@ init();
  * Start the intervals
  */
 function init() {
+  
+  var pointsPerBubble = prompt("Points per bubble");
+  var maxBubbles = prompt("Max Bubbles");
+  
   bubbles = [];
   for (var i = 0; i < maxBubbles; i++) {
-    var bubble = makeBubble();
+    var bubble = makeBubble(pointsPerBubble);
     bubbles.push(bubble);
     board.append(bubble);
   }
@@ -59,30 +61,6 @@ function init() {
   
   //start game running
   updateInterval = setInterval(update, 50);
-}
-
-/* Making Bubbles */
-function makeBubble() {
-  // make the bubble Object
-  var bubble = $('<div>')
-    .addClass('bubble')
-    .css('background-color', randomRGB())
-    .text(pointsPerBubble);
-    
-  // set bubble movement properties
-  bubble.x = Math.round(Math.random() * boardWidth);
-  bubble.y = Math.round(Math.random() * boardHeight);
-  bubble.speed = 10;
-  bubble.directionX = Math.round(Math.random()) ? 1 : -1;
-  bubble.directionY = Math.round(Math.random()) ? 1 : -1;
-
-  // initialize bubble points total
-  bubble.points = pointsPerBubble;
-
-  // set bubble click behavior
-  bubble.on('click', () => handleBubbleClick(bubble));
-
-  return bubble;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -146,6 +124,30 @@ function keepInBounds(bubble) {
   else if (bubble.y < 0) {
     bubble.directionY = 1;
   }
+}
+
+/* Making Bubbles */
+function makeBubble(pointsPerBubble) {
+  // make the bubble Object
+  var bubble = $('<div>')
+    .addClass('bubble')
+    .css('background-color', randomRGB())
+    .text(pointsPerBubble);
+    
+  // set bubble movement properties
+  bubble.x = Math.round(Math.random() * boardWidth);
+  bubble.y = Math.round(Math.random() * boardHeight);
+  bubble.speed = 10;
+  bubble.directionX = Math.round(Math.random()) ? 1 : -1;
+  bubble.directionY = Math.round(Math.random()) ? 1 : -1;
+
+  // initialize bubble points total
+  bubble.points = pointsPerBubble;
+
+  // set bubble click behavior
+  bubble.on('click', () => handleBubbleClick(bubble));
+
+  return bubble;
 }
 
 /* 
