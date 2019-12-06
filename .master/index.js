@@ -53,7 +53,6 @@ function init() {
   
   bubblesLeft = bubbles.length;
   
-  
   // start the timer
   timer.text("0:00");
   time = 0;
@@ -83,25 +82,6 @@ function update() {
     init();
   }
 }
-
-/* 
- * When clicking on a bubble increase the bubble's speed,
- * decrement its point value, and if the point value hits 0 
- * remove it
- */
-function handleBubbleClick(bubble) {
-  bubble.speed += 3;
-  bubble.points--;
-  if (bubble.points === 0) {
-    popBubble(bubble);
-  }
-  bubble.text(bubble.points);
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////////////////////////// HELPER FUNCTIONS /////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
 
 function updateBubblePosition(bubble) {
   bubble.x += (bubble.directionX * bubble.speed);
@@ -149,6 +129,24 @@ function makeBubble(pointsPerBubble) {
 
   return bubble;
 }
+
+/* 
+ * When clicking on a bubble increase the bubble's speed,
+ * decrement its point value, and if the point value hits 0 
+ * remove it
+ */
+function handleBubbleClick(bubble) {
+  bubble.speed += 3;
+  bubble.points--;
+  if (bubble.points === 0) {
+    popBubble(bubble);
+  }
+  bubble.text(bubble.points);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+////////////////////////// HELPER FUNCTIONS /////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 /* 
 * Each rgb value will be between 0 and 255
