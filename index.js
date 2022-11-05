@@ -29,6 +29,9 @@ var bubbles;
 var updateInterval;
 var timerInterval;
 
+// game variables
+var maxBubbles = 10;
+pointsPerBubble = 3;
 
 /////////////////////////////////////////////////////////////////////////////
 //////////////////////////// GAME SETUP /////////////////////////////////////
@@ -42,9 +45,6 @@ var timerInterval;
  * Start the intervals
  */
 function init() {
-  
-  var pointsPerBubble = prompt("Points per bubble") || 1;
-  var maxBubbles = prompt("Max Bubbles") || 10;
   
   bubbles = [];
   for (var i = 0; i < maxBubbles; i++) {
