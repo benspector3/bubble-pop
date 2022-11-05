@@ -11,13 +11,15 @@ sessionStorage.setItem("lowestTimeStr", "0:00");
 
 // timer variables
 var timer = $('#timer');
+timer.hide();
 var timeStr;
 var time;
 
 // board variables
 var board = $('#board');
 var boardWidth = board.width();
-var boardHeight = $(window).height();
+var boardHeight = board.height();
+var playButton = $('#play');
 
 // bubble variables
 var bubblesLeft;
@@ -57,6 +59,10 @@ function init() {
   timer.text("0:00");
   time = 0;
   timerInterval = setInterval(updateTimer, 1000);
+
+  // hide the play button and show the timer
+  playButton.hide();
+  timer.show();
   
   //start game running
   updateInterval = setInterval(update, 50);
@@ -79,6 +85,8 @@ function update() {
   
   if (bubblesLeft === 0) {
     endGame();
+    playButton.show();
+    timer.hide();
   }
 }
 
@@ -90,18 +98,24 @@ function updateBubblePosition(bubble) {
 }
 
 function keepInBounds(bubble) {
-  if (bubble.x + 70 > boardWidth) {
+  if (bubble.x + bubble.width() > boardWidth) {
     bubble.directionX = -1;
+    bubble.x = boardWidth - bubble.width();
   }
   else if (bubble.x < 0) {
     bubble.directionX = 1;
+    bubble.x = 0
   }
 
-  if (bubble.y + 70 > boardHeight) {
+  if (bubble.y + bubble.height() > boardHeight) {
     bubble.directionY = -1;
+    console.log(bubble);
+    bubble.y = boardHeight - bubble.height();
+    console.log(bubble);
   }
   else if (bubble.y < 0) {
     bubble.directionY = 1;
+    bubble.y = 0;
   }
 }
 
