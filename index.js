@@ -36,6 +36,8 @@ const POINTS_PER_BUBBLE = 3;
 const SPEED = 10;
 const ACCELERATION = 5;
 
+alert("Pop the bubbles as fast as you can. Each bubble takes 3 taps to pop!")
+
 /////////////////////////////////////////////////////////////////////////////
 //////////////////////////// GAME SETUP /////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
@@ -48,10 +50,13 @@ const ACCELERATION = 5;
  * Start the intervals
  */
 function init() {
-  
+  // Create a new array for the bubbles
   bubbles = [];
+
+  // Create the bubble DOM elements and add them to the board
+  // Add them to the array
   for (let i = 0; i < NUM_BUBBLES; i++) {
-    let bubble = makeBubble(POINTS_PER_BUBBLE);
+    const bubble = makeBubble(POINTS_PER_BUBBLE);
     bubbles.push(bubble);
     board.append(bubble);
   }
