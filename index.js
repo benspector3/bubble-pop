@@ -32,7 +32,7 @@ var timerInterval;
 //////////////////////////// GAME SETUP /////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 
-init();
+// init();
 
 /* 
  * Reset the clock, the bubbles and the intervals
@@ -41,8 +41,8 @@ init();
  */
 function init() {
   
-  var pointsPerBubble = prompt("Points per bubble");
-  var maxBubbles = prompt("Max Bubbles");
+  var pointsPerBubble = prompt("Points per bubble") || 1;
+  var maxBubbles = prompt("Max Bubbles") || 10;
   
   bubbles = [];
   for (var i = 0; i < maxBubbles; i++) {
@@ -79,7 +79,6 @@ function update() {
   
   if (bubblesLeft === 0) {
     endGame();
-    init();
   }
 }
 
