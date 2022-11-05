@@ -4,36 +4,37 @@
 //////////////////////////// VARIABLES //////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 
-
 // Set window sessionStorage to keep track of high scores (lowest time)
 sessionStorage.setItem("lowestTime", Infinity);
 sessionStorage.setItem("lowestTimeStr", "0:00");
 
+// DOM elements
+const timer = $('#timer');
+const board = $('#board');
+const playButton = $('#play');
+
 // timer variables
-var timer = $('#timer');
 timer.hide();
-var timeStr;
-var time;
+let timeStr;
+let time;
 
 // board variables
-var board = $('#board');
-var boardWidth = board.width();
-var boardHeight = board.height();
-var playButton = $('#play');
+const boardWidth = board.width();
+const boardHeight = board.height();
 
 // bubble variables
-var bubblesLeft;
-var bubbles;
+let bubblesLeft;
+let bubbles;
 
 // interval variables
-var updateInterval;
-var timerInterval;
+let updateInterval;
+let timerInterval;
 
 // game constants
-var NUM_BUBBLES = 10;
-var POINTS_PER_BUBBLE = 3;
-var SPEED = 10;
-var ACCELERATION = 5;
+const NUM_BUBBLES = 10;
+const POINTS_PER_BUBBLE = 3;
+const SPEED = 10;
+const ACCELERATION = 5;
 
 /////////////////////////////////////////////////////////////////////////////
 //////////////////////////// GAME SETUP /////////////////////////////////////
@@ -49,8 +50,8 @@ var ACCELERATION = 5;
 function init() {
   
   bubbles = [];
-  for (var i = 0; i < NUM_BUBBLES; i++) {
-    var bubble = makeBubble(POINTS_PER_BUBBLE);
+  for (let i = 0; i < NUM_BUBBLES; i++) {
+    let bubble = makeBubble(POINTS_PER_BUBBLE);
     bubbles.push(bubble);
     board.append(bubble);
   }
@@ -79,8 +80,8 @@ function init() {
 * collisions with the walls.
 */
 function update() {
-  for (var i = 0; i < bubbles.length; i++) {
-    var bubble = bubbles[i];
+  for (let i = 0; i < bubbles.length; i++) {
+    let bubble = bubbles[i];
     updateBubblePosition(bubble);
     keepInBounds(bubble);
   }
@@ -100,9 +101,9 @@ function updateBubblePosition(bubble) {
 }
 
 function keepInBounds(bubble) {
-  var xMax = boardWidth - bubble.width();
-  var yMax = boardHeight - bubble.height();
-  var xMin = yMin = 0;
+  let xMax = boardWidth - bubble.width();
+  let yMax = boardHeight - bubble.height();
+  let xMin = yMin = 0;
 
   if (bubble.x > xMax) {
     bubble.directionX = -1;
@@ -126,7 +127,7 @@ function keepInBounds(bubble) {
 /* Making Bubbles */
 function makeBubble(pointsPerBubble) {
   // make the bubble Object
-  var bubble = $('<div>')
+  let bubble = $('<div>')
     .addClass('bubble')
     .css('background-color', randomRGB())
     .text(pointsPerBubble);
@@ -170,9 +171,9 @@ function handleBubbleClick(bubble) {
 * Each rgb value will be between 0 and 255
 */
 function randomRGB() {
-  var r = Math.round(50 + Math.random() * 205);
-  var g = Math.round(50 + Math.random() * 205);
-  var b = Math.round(50 + Math.random() * 205);
+  let r = Math.round(50 + Math.random() * 205);
+  let g = Math.round(50 + Math.random() * 205);
+  let b = Math.round(50 + Math.random() * 205);
   return "rgb(" + r + "," + g + "," + b + ")";
 }
 
@@ -190,9 +191,9 @@ function popBubble(bubble) {
 
 function updateTimer() {
   time++;
-  var secondsOnes = (time % 60) % 10;
-  var secondsTens = Math.floor((time % 60) / 10);
-  var minutes = Math.floor(time / 60);
+  let secondsOnes = (time % 60) % 10;
+  let secondsTens = Math.floor((time % 60) / 10);
+  let minutes = Math.floor(time / 60);
   timeStr = minutes + ":" + secondsTens + secondsOnes;
   timer.text(timeStr);
 }
@@ -201,8 +202,8 @@ function endGame() {
   clearInterval(updateInterval);
   clearInterval(timerInterval);
   
-  var lowestTime = sessionStorage.getItem("lowestTime");
-  var lowestTimeStr = sessionStorage.getItem("lowestTimeStr");
+  let lowestTime = sessionStorage.getItem("lowestTime");
+  let lowestTimeStr = sessionStorage.getItem("lowestTimeStr");
   
   if (time < lowestTime) {
     sessionStorage.setItem("lowestTime", time);
