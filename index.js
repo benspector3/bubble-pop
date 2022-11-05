@@ -29,9 +29,11 @@ var bubbles;
 var updateInterval;
 var timerInterval;
 
-// game variables
-var maxBubbles = 10;
-pointsPerBubble = 3;
+// game constants
+var NUM_BUBBLES = 10;
+var POINTS_PER_BUBBLE = 3;
+var SPEED = 10;
+var ACCELERATION = 5;
 
 /////////////////////////////////////////////////////////////////////////////
 //////////////////////////// GAME SETUP /////////////////////////////////////
@@ -47,8 +49,8 @@ pointsPerBubble = 3;
 function init() {
   
   bubbles = [];
-  for (var i = 0; i < maxBubbles; i++) {
-    var bubble = makeBubble(pointsPerBubble);
+  for (var i = 0; i < NUM_BUBBLES; i++) {
+    var bubble = makeBubble(POINTS_PER_BUBBLE);
     bubbles.push(bubble);
     board.append(bubble);
   }
@@ -98,24 +100,26 @@ function updateBubblePosition(bubble) {
 }
 
 function keepInBounds(bubble) {
-  if (bubble.x + bubble.width() > boardWidth) {
+  var xMax = boardWidth - bubble.width();
+  var yMax = boardHeight - bubble.height();
+  var xMin = yMin = 0;
+
+  if (bubble.x > xMax) {
     bubble.directionX = -1;
-    bubble.x = boardWidth - bubble.width();
+    bubble.x = xMax;
   }
-  else if (bubble.x < 0) {
+  else if (bubble.x < xMin) {
     bubble.directionX = 1;
-    bubble.x = 0
+    bubble.x = xMin;
   }
 
-  if (bubble.y + bubble.height() > boardHeight) {
+  if (bubble.y > yMax) {
     bubble.directionY = -1;
-    console.log(bubble);
-    bubble.y = boardHeight - bubble.height();
-    console.log(bubble);
+    bubble.y = yMax;
   }
-  else if (bubble.y < 0) {
+  else if (bubble.y < yMin) {
     bubble.directionY = 1;
-    bubble.y = 0;
+    bubble.y = yMin;
   }
 }
 
@@ -130,7 +134,7 @@ function makeBubble(pointsPerBubble) {
   // set bubble movement properties
   bubble.x = Math.round(Math.random() * boardWidth);
   bubble.y = Math.round(Math.random() * boardHeight);
-  bubble.speed = 10;
+  bubble.speed = SPEED;
   bubble.directionX = Math.round(Math.random()) ? 1 : -1;
   bubble.directionY = Math.round(Math.random()) ? 1 : -1;
 
@@ -150,7 +154,7 @@ function makeBubble(pointsPerBubble) {
  * remove it
  */
 function handleBubbleClick(bubble) {
-  bubble.speed += 3;
+  bubble.speed += ACCELERATION;
   bubble.points--;
   if (bubble.points === 0) {
     popBubble(bubble);
