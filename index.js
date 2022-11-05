@@ -125,6 +125,7 @@ function makeBubble(pointsPerBubble) {
 
   // set bubble click behavior
   bubble.on('click', () => handleBubbleClick(bubble));
+  bubble.on('touchstart', () => handleBubbleClick(bubble));
 
   return bubble;
 }
