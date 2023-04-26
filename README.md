@@ -7,4 +7,4 @@ Built using HTML, CSS, JS, and jQuery
 
 Uses `sessionStorage` to locally track high scores.
 
-test
+test 2
